@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Listings · Naga City</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #16233F;
+    --navy-deep: #0D1730;
+    --white: #FFFFFF;
+    --sand: #F4F1EA;
+    --brass: #C79A56;
+    --brass-soft: #E7D3AA;
+    --ink-soft: rgba(255,255,255,0.68);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--sand);
+    color:var(--navy-deep);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em;}
+  a{text-decoration:none; color:inherit;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color:var(--white);
+    padding: 64px 24px 96px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-60px; bottom:-80px;
+    width:300px; height:300px;
+    border:1px solid rgba(199,154,86,0.25);
+    border-radius:50%;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--brass);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:20px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--brass);}
+  .hero h1{
+    font-size:clamp(34px, 7vw, 52px);
+    line-height:1.08;
+    max-width:520px;
+  }
+  .hero h1 em{ font-style:italic; color:var(--brass-soft); }
+  .hero p{
+    margin-top:18px;
+    max-width:440px;
+    font-size:16px;
+    line-height:1.6;
+    color:var(--ink-soft);
+  }
+  .hero-cta{
+    margin-top:32px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 22px;
+    border-radius:2px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn:active{ transform: scale(0.98); }
+  .btn-brass{ background:var(--brass); color:var(--navy-deep); }
+  .btn-brass:hover{ background:var(--brass-soft); }
+  .btn-outline{ border-color:rgba(255,255,255,0.3); color:var(--white); }
+  .btn-outline:hover{ border-color:var(--brass); color:var(--brass-soft); }
+
+  .agent-tag{
+    margin-top:56px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding-top:24px;
+    border-top:1px solid rgba(255,255,255,0.14);
+    max-width:420px;
+  }
+  .agent-photo{
+    width:46px; height:46px;
+    border-radius:50%;
+    background: linear-gradient(135deg, var(--brass), #8a6a34);
+    flex-shrink:0;
+  }
+  .agent-tag .name{ font-weight:600; font-size:14px; }
+  .agent-tag .role{ font-size:12px; color:var(--ink-soft); }
+
+  /* ---------- SECTION LABEL ---------- */
+  .section{ padding: 64px 24px; max-width:1040px; margin:0 auto; }
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:36px;
+    flex-wrap:wrap;
+    gap:12px;
+    border-bottom:1px solid rgba(22,35,63,0.12);
+    padding-bottom:18px;
+  }
+  .section-head .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--navy);
+    opacity:0.55;
+  }
+  .section-head h2{ font-size:28px; margin-top:6px; }
+
+  /* ---------- LISTINGS ---------- */
+  .listings{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:22px;
+  }
+  .card{
+    background:var(--white);
+    border:1px solid rgba(22,35,63,0.10);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    transition: box-shadow .2s ease, transform .2s ease;
+  }
+  .card{ cursor:pointer; }
+  .card:hover{ box-shadow: 0 18px 32px rgba(13,23,48,0.12); transform:translateY(-2px); }
+  .card-visual{
+    height:150px;
+    position:relative;
+    background: linear-gradient(150deg, var(--navy) 0%, #223963 100%);
+  }
+  .roofline{
+    position:absolute; inset:0;
+    opacity:0.5;
+  }
+  .card-tag{
+    position:absolute; top:12px; left:12px;
+    background:var(--brass);
+    color:var(--navy-deep);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:5px 9px;
+  }
+  .card-body{ padding:18px 18px 20px; display:flex; flex-direction:column; gap:10px; flex:1; }
+  .card-body h3{ font-size:19px; }
+  .card-loc{ font-size:12.5px; color:rgba(22,35,63,0.6); }
+  .specs{
+    display:flex;
+    gap:14px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    color:var(--navy);
+    opacity:0.75;
+    padding:10px 0;
+    border-top:1px dashed rgba(22,35,63,0.15);
+    border-bottom:1px dashed rgba(22,35,63,0.15);
+  }
+  .price{ font-size:20px; font-weight:700; font-family:'Fraunces', serif; margin-top:2px; }
+  .price span{ font-size:12px; font-weight:500; opacity:0.55; font-family:'Inter',sans-serif; }
+  .card-cta{
+    margin-top:auto;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--navy-deep);
+    color:var(--white);
+    font-size:13px; font-weight:600;
+    padding:12px;
+    cursor:pointer;
+    transition: background .15s ease;
+  }
+  .card-cta:hover{ background:#1e5a3f; }
+  .card-cta svg{ width:15px; height:15px; }
+
+  /* ---------- ABOUT ---------- */
+  .about{
+    background:var(--white);
+    border:1px solid rgba(22,35,63,0.10);
+    padding:36px 32px;
+    display:grid;
+    grid-template-columns: 90px 1fr;
+    gap:26px;
+    align-items:start;
+  }
+  .about .agent-photo{ width:90px; height:90px; }
+  .about h3{ font-size:22px; }
+  .about p{ margin-top:10px; font-size:14.5px; line-height:1.7; color:rgba(13,23,48,0.72); max-width:520px; }
+  .credentials{
+    display:flex; gap:18px; margin-top:18px; flex-wrap:wrap;
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--navy); opacity:0.7;
+  }
+
+  /* ---------- FOOTER / CONTACT ---------- */
+  .contact{
+    background:var(--navy-deep);
+    color:var(--white);
+    padding:64px 24px 40px;
+  }
+  .contact-inner{ max-width:1040px; margin:0 auto; text-align:center; }
+  .contact h2{ font-size:30px; max-width:480px; margin:0 auto 14px; }
+  .contact p{ color:var(--ink-soft); max-width:420px; margin:0 auto 28px; font-size:14.5px; line-height:1.6; }
+  .contact-links{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+  .foot-note{
+    margin-top:56px;
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    color:rgba(255,255,255,0.3);
+  }
+
+  @media (max-width:600px){
+    .about{ grid-template-columns:1fr; text-align:left; }
+    .about .agent-photo{ margin-bottom:4px; }
+  }
+
+  /* ---------- PHOTO-READY CARD IMAGES ---------- */
+  .card-visual{ overflow:hidden; }
+  .card-visual img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  /* If no photo is loaded yet, the gradient below shows as a fallback */
+  .card-visual.no-photo{
+    background: linear-gradient(150deg, var(--navy) 0%, #223963 100%);
+  }
+
+  /* ---------- TRUST / WHY SECTION ---------- */
+  .trust-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:24px;
+    margin-top:8px;
+  }
+  .trust-item{ padding-right:12px; }
+  .trust-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; color:var(--brass); opacity:0.9;
+    margin-bottom:8px;
+  }
+  .trust-item h4{ font-family:'Fraunces', serif; font-size:17px; font-weight:600; margin-bottom:6px; }
+  .trust-item p{ font-size:13.5px; line-height:1.6; color:rgba(13,23,48,0.65); }
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testimonials{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    gap:20px;
+  }
+  .testimonial{
+    background:var(--white);
+    border:1px solid rgba(22,35,63,0.10);
+    border-left:3px solid var(--brass);
+    padding:22px 20px;
+  }
+  .testimonial p{ font-size:14px; line-height:1.65; color:rgba(13,23,48,0.78); font-style:italic; }
+  .testimonial .who{
+    margin-top:14px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.04em;
+    color:var(--navy); opacity:0.6; font-style:normal;
+  }
+
+  /* ---------- STICKY MOBILE CTA ---------- */
+  .sticky-cta{
+    display:none;
+    position:fixed; bottom:0; left:0; right:0;
+    z-index:50;
+    background:var(--navy-deep);
+    border-top:1px solid rgba(199,154,86,0.3);
+    padding:12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  .sticky-cta a{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--brass);
+    color:var(--navy-deep);
+    font-weight:700; font-size:14px;
+    padding:13px; border-radius:2px;
+  }
+  @media (max-width:640px){
+    .sticky-cta{ display:block; }
+    body{ padding-bottom:64px; }
+  }
+
+  /* ---------- LISTING MODAL ---------- */
+  .modal-overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(13,23,48,0.72);
+    z-index:100;
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .modal-overlay.active{ display:flex; }
+  .modal-panel{
+    background:var(--white);
+    max-width:560px; width:100%;
+    max-height:88vh;
+    overflow-y:auto;
+    position:relative;
+  }
+  .modal-close{
+    position:absolute; top:14px; right:14px;
+    width:34px; height:34px;
+    border-radius:50%;
+    background:rgba(13,23,48,0.55);
+    color:var(--white);
+    border:none;
+    font-size:16px;
+    cursor:pointer;
+    z-index:5;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .carousel{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    height:260px;
+    scrollbar-width:none;
+  }
+  .carousel::-webkit-scrollbar{ display:none; }
+  .carousel-slide{
+    flex:0 0 100%;
+    scroll-snap-align:start;
+    position:relative;
+    background: linear-gradient(150deg, var(--navy) 0%, #223963 100%);
+  }
+  .carousel-slide img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .carousel-slide .no-photo-label{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    color:rgba(255,255,255,0.4);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    text-align:center;
+    padding:0 20px;
+  }
+  .carousel-dots{
+    display:flex; justify-content:center; gap:6px;
+    padding:12px 0 0;
+  }
+  .carousel-dots span{
+    width:5px; height:5px; border-radius:50%;
+    background:rgba(22,35,63,0.2);
+  }
+  .modal-body{ padding:20px 22px 26px; }
+  .modal-desc{ font-size:14px; line-height:1.7; color:rgba(13,23,48,0.72); margin:14px 0 18px; }
+  .modal-wa{ width:100%; justify-content:center; margin-top:16px; }
+  body.modal-open{ overflow:hidden; }
+</style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow">Camella &amp; Deca Homes · Naga City</div>
+    <h1>Find your family's <em>next address</em> without leaving the chat.</h1>
+    <p>Browse available house models with real photos, floor plans, and pricing, then tap into a listing to see more and message the agent directly.</p>
+    <div class="hero-cta">
+      <a href="#listings" class="btn btn-brass">View available homes</a>
+    </div>
+    <div class="agent-tag">
+      <div class="agent-photo"></div>
+      <div>
+        <div class="name">[ Mom's Name ]</div>
+        <div class="role">Licensed Real Estate Agent · Camella / Deca Homes, Naga City</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTINGS -->
+  <section class="section" id="listings">
+    <div class="section-head">
+      <div>
+        <div class="tag">Available now</div>
+        <h2>Featured units</h2>
+      </div>
+      <div class="tag">3 of 12 listings</div>
+    </div>
+
+    <div class="listings">
+
+      <div class="card" onclick="openListing('bella')">
+        <!-- SWAP: replace src below with the real Bella Model photo -->
+        <div class="card-visual no-photo">
+          <img src="assets/listings/bella-1.jpg" alt="Bella Model house" onerror="this.style.display='none'">
+          <div class="card-tag">Ready for viewing</div>
+        </div>
+        <div class="card-body">
+          <h3>Bella Model</h3>
+          <div class="card-loc">Camella Naga, Brgy. Del Rosario</div>
+          <div class="specs">
+            <span>2 BR</span><span>1 T&amp;B</span><span>36 sqm</span>
+          </div>
+          <div class="price">₱2.1M <span>/ house &amp; lot</span></div>
+        </div>
+      </div>
+
+      <div class="card" onclick="openListing('drina')">
+        <!-- SWAP: replace src below with the real Drina Model photo -->
+        <div class="card-visual no-photo">
+          <img src="assets/listings/drina-1.jpg" alt="Drina Model house" onerror="this.style.display='none'">
+          <div class="card-tag">Under construction</div>
+        </div>
+        <div class="card-body">
+          <h3>Drina Model</h3>
+          <div class="card-loc">Deca Homes, Pacol, Naga City</div>
+          <div class="specs">
+            <span>3 BR</span><span>2 T&amp;B</span><span>52 sqm</span>
+          </div>
+          <div class="price">₱3.4M <span>/ house &amp; lot</span></div>
+        </div>
+      </div>
+
+      <div class="card" onclick="openListing('cornerlot')">
+        <!-- SWAP: replace src below with the real lot photo -->
+        <div class="card-visual no-photo">
+          <img src="assets/listings/cornerlot-1.jpg" alt="Corner lot" onerror="this.style.display='none'">
+          <div class="card-tag">Ready for viewing</div>
+        </div>
+        <div class="card-body">
+          <h3>Corner Lot</h3>
+          <div class="card-loc">Camella Naga, Brgy. Del Rosario</div>
+          <div class="specs">
+            <span>Corner lot</span><span>90 sqm</span>
+          </div>
+          <div class="price">₱980K <span>/ lot only</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TRUST / WHY -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="tag">Why book a viewing</div>
+        <h2>Buying a house shouldn't feel like a gamble</h2>
+      </div>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="num">01</div>
+        <h4>She walks every unit herself</h4>
+        <p>No stock photos from a catalog. Every listing here is one she's personally toured, so what you see is what's actually there.</p>
+      </div>
+      <div class="trust-item">
+        <div class="num">02</div>
+        <h4>Help with bank financing</h4>
+        <p>Guidance on Pag-IBIG and bank loan requirements, so first-time buyers aren't figuring out paperwork alone.</p>
+      </div>
+      <div class="trust-item">
+        <div class="num">03</div>
+        <h4>Straight answers, fast</h4>
+        <p>Message her directly on WhatsApp for real replies from the agent, not a call center script.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section" style="padding-top:0;">
+    <div class="section-head">
+      <div>
+        <div class="tag">From past buyers</div>
+        <h2>What clients say</h2>
+      </div>
+    </div>
+    <!-- SWAP: replace these 3 with real client quotes once your mom has them (screenshot a FB/Messenger thank-you message and just retype it) -->
+    <div class="testimonials">
+      <div class="testimonial">
+        <p>"[Real client quote goes here. Ask a past buyer for a short line about the experience.]"</p>
+        <div class="who">Buyer, Camella Naga</div>
+      </div>
+      <div class="testimonial">
+        <p>"[Real client quote goes here. Even one sentence from a Messenger chat works.]"</p>
+        <div class="who">Buyer, Deca Homes</div>
+      </div>
+      <div class="testimonial">
+        <p>"[Real client quote goes here. This section builds more trust than anything else on the page.]"</p>
+        <div class="who">Buyer, Naga City</div>
+      </div>
+    </div>
+    <div class="foot-note" style="color:rgba(22,35,63,0.35); margin-top:40px;">CAMELLA &amp; DECA HOMES · NAGA CITY, CAMARINES SUR</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" style="padding-top:0;">
+    <div class="section-head">
+      <div>
+        <div class="tag">Your agent</div>
+        <h2>Someone who knows the subdivision</h2>
+      </div>
+    </div>
+    <div class="about">
+      <div class="agent-photo"></div>
+      <div>
+        <h3>[ Mom's Name ]</h3>
+        <p>Helping families in Naga City find the right house and lot for over [X] years, with active listings across Camella and Deca Homes developments. Every unit here is one she has personally walked through, so ask her anything about the neighborhood, payment terms, or move-in timeline.</p>
+        <div class="credentials">
+          <span>PRC LIC. NO. [ XXXXXX ]</span>
+          <span>NAGA CITY, CAMARINES SUR</span>
+          <span>RESPONDS WITHIN THE DAY</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTING DETAIL MODAL -->
+  <div class="modal-overlay" id="listingModal" onclick="if(event.target===this) closeListing()">
+    <div class="modal-panel">
+      <button class="modal-close" onclick="closeListing()">✕</button>
+      <div class="carousel" id="modalCarousel"></div>
+      <div class="modal-body">
+        <div class="card-tag" id="modalTag" style="position:static; display:inline-block; margin-bottom:12px;"></div>
+        <h3 id="modalTitle" style="font-size:22px;"></h3>
+        <div class="card-loc" id="modalLoc"></div>
+        <div class="specs" id="modalSpecs"></div>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="price" id="modalPrice"></div>
+        <a class="btn btn-brass modal-wa" id="modalWaBtn" target="_blank">Message on WhatsApp →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY MOBILE CTA -->
+  <div class="sticky-cta">
+    <a href="https://wa.me/639176805050?text=Hi%2C%20I%27d%20like%20to%20ask%20about%20available%20house%20and%20lot%20units." target="_blank">
+      Message on WhatsApp →
+    </a>
+  </div>
+
+<script>
+  // SWAP: fill in photo paths as your mom sends real photos. Missing photos fall back to a "photo coming soon" slide automatically.
+  const LISTINGS = {
+    bella: {
+      tag: 'Ready for viewing',
+      title: 'Bella Model',
+      loc: 'Camella Naga, Brgy. Del Rosario',
+      specs: ['2 BR', '1 T&B', '36 sqm'],
+      price: '₱2.1M',
+      priceNote: '/ house & lot',
+      desc: 'A compact single attached home built for young families starting out. Two bedrooms upstairs, an open living and dining area downstairs, and room to add a carport later on.',
+      photos: ['assets/listings/bella-1.jpg', 'assets/listings/bella-2.jpg', 'assets/listings/bella-3.jpg'],
+      waText: "Hi, I'm interested in the Bella Model unit."
+    },
+    drina: {
+      tag: 'Under construction',
+      title: 'Drina Model',
+      loc: 'Deca Homes, Pacol, Naga City',
+      specs: ['3 BR', '2 T&B', '52 sqm'],
+      price: '₱3.4M',
+      priceNote: '/ house & lot',
+      desc: 'A roomier three bedroom option for growing families, with two full bathrooms and a layout that separates the living area from the bedrooms upstairs. Currently under construction, with unit turnover on a set schedule.',
+      photos: ['assets/listings/drina-1.jpg', 'assets/listings/drina-2.jpg', 'assets/listings/drina-3.jpg'],
+      waText: "Hi, I'm interested in the Drina Model unit."
+    },
+    cornerlot: {
+      tag: 'Ready for viewing',
+      title: 'Corner Lot',
+      loc: 'Camella Naga, Brgy. Del Rosario',
+      specs: ['Corner lot', '90 sqm'],
+      price: '₱980K',
+      priceNote: '/ lot only',
+      desc: 'A 90 sqm corner lot with extra frontage on two sides, ideal if you plan to build your own house design later or want added privacy from neighbors on just one side.',
+      photos: ['assets/listings/cornerlot-1.jpg', 'assets/listings/cornerlot-2.jpg'],
+      waText: "Hi, I'm interested in the corner lot listing."
+    }
+  };
+
+  function openListing(id){
+    const item = LISTINGS[id];
+    if(!item) return;
+
+    document.getElementById('modalTag').textContent = item.tag;
+    document.getElementById('modalTitle').textContent = item.title;
+    document.getElementById('modalLoc').textContent = item.loc;
+    document.getElementById('modalDesc').textContent = item.desc;
+    document.getElementById('modalPrice').innerHTML = item.price + ' <span>' + item.priceNote + '</span>';
+
+    const specsEl = document.getElementById('modalSpecs');
+    specsEl.innerHTML = item.specs.map(s => '<span>' + s + '</span>').join('');
+
+    const waBtn = document.getElementById('modalWaBtn');
+    waBtn.href = 'https://wa.me/639176805050?text=' + encodeURIComponent(item.waText);
+
+    const carousel = document.getElementById('modalCarousel');
+    carousel.innerHTML = item.photos.map(src =>
+      '<div class="carousel-slide">' +
+        '<img src="' + src + '" alt="' + item.title + ' photo" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' +
+        '<div class="no-photo-label" style="display:none;">Photo coming soon</div>' +
+      '</div>'
+    ).join('');
+    carousel.scrollLeft = 0;
+
+    document.getElementById('listingModal').classList.add('active');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeListing(){
+    document.getElementById('listingModal').classList.remove('active');
+    document.body.classList.remove('modal-open');
+  }
+</script>
+
+</body>
+</html>
